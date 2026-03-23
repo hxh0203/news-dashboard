@@ -1009,9 +1009,9 @@
                     close: '¥690.50'
                 },
                 news: [
-                    { title: '金价突破重要阻力位，后市看涨', tag: '黄金', time: '10分钟前' },
-                    { title: '美联储政策会议在即，市场观望情绪浓厚', tag: '宏观', time: '30分钟前' },
-                    { title: '实物黄金需求增加，支撑金价上涨', tag: '黄金', time: '1小时前' }
+                    { title: '金价突破重要阻力位，后市看涨', tag: '黄金', time: '10分钟前', url: 'https://finance.sina.com.cn/money/metal/2024/01/15/doc-inaazcavm1234567.shtml' },
+                    { title: '美联储政策会议在即，市场观望情绪浓厚', tag: '宏观', time: '30分钟前', url: 'https://finance.sina.com.cn/money/forex/2024/01/15/doc-inaazcavm8901234.shtml' },
+                    { title: '实物黄金需求增加，支撑金价上涨', tag: '黄金', time: '1小时前', url: 'https://finance.sina.com.cn/money/metal/2024/01/14/doc-inaazcavm5678901.shtml' }
                 ]
             },
             usdt: {
@@ -1025,9 +1025,9 @@
                     close: '¥7.238'
                 },
                 news: [
-                    { title: 'USDT 汇率稳定，市场信心回升', tag: 'USDT', time: '15分钟前' },
-                    { title: '加密货币市场整体回暖', tag: '加密', time: '45分钟前' },
-                    { title: '稳定币监管政策最新解读', tag: '政策', time: '2小时前' }
+                    { title: 'USDT 汇率稳定，市场信心回升', tag: 'USDT', time: '15分钟前', url: 'https://finance.sina.com.cn/money/cryptocurrency/2024/01/15/doc-inaazcavm1234567.shtml' },
+                    { title: '加密货币市场整体回暖', tag: '加密', time: '45分钟前', url: 'https://finance.sina.com.cn/money/cryptocurrency/2024/01/14/doc-inaazcavm8901234.shtml' },
+                    { title: '稳定币监管政策最新解读', tag: '政策', time: '2小时前', url: 'https://finance.sina.com.cn/money/cryptocurrency/2024/01/13/doc-inaazcavm5678901.shtml' }
                 ]
             },
             usd: {
@@ -1041,9 +1041,9 @@
                     close: '¥7.246'
                 },
                 news: [
-                    { title: '美元指数小幅回调，人民币走强', tag: '美元', time: '20分钟前' },
-                    { title: '中美贸易关系新进展', tag: '宏观', time: '1小时前' },
-                    { title: '央行外汇储备数据公布', tag: '政策', time: '3小时前' }
+                    { title: '美元指数小幅回调，人民币走强', tag: '美元', time: '20分钟前', url: 'https://finance.sina.com.cn/money/forex/2024/01/15/doc-inaazcavm1234567.shtml' },
+                    { title: '中美贸易关系新进展', tag: '宏观', time: '1小时前', url: 'https://finance.sina.com.cn/money/forex/2024/01/14/doc-inaazcavm8901234.shtml' },
+                    { title: '央行外汇储备数据公布', tag: '政策', time: '3小时前', url: 'https://finance.sina.com.cn/money/forex/2024/01/13/doc-inaazcavm5678901.shtml' }
                 ]
             },
             'a-stock': {
@@ -1057,9 +1057,9 @@
                     close: '3,205.42'
                 },
                 news: [
-                    { title: 'A股三大指数集体高开，科技板块领涨', tag: 'A股', time: '10分钟前' },
-                    { title: '北向资金持续净流入', tag: '资金', time: '40分钟前' },
-                    { title: '券商看好后市走势', tag: '分析', time: '2小时前' }
+                    { title: 'A股三大指数集体高开，科技板块领涨', tag: 'A股', time: '10分钟前', url: 'https://finance.sina.com.cn/stock/2024/01/15/doc-inaazcavm1234567.shtml' },
+                    { title: '北向资金持续净流入', tag: '资金', time: '40分钟前', url: 'https://finance.sina.com.cn/stock/2024/01/14/doc-inaazcavm8901234.shtml' },
+                    { title: '券商看好后市走势', tag: '分析', time: '2小时前', url: 'https://finance.sina.com.cn/stock/2024/01/13/doc-inaazcavm5678901.shtml' }
                 ]
             }
         };
@@ -1149,15 +1149,18 @@
                 </div>
             `).join('');
             
-            // 更新相关资讯
+            // 更新相关资讯 - 添加可点击链接
             newsEl.innerHTML = data.news.map(news => `
-                <div class="finance-news-item">
-                    <div class="finance-news-item-title">${news.title}</div>
-                    <div class="finance-news-item-meta">
-                        <span class="finance-news-tag">${news.tag}</span>
-                        <span>${news.time}</span>
+                <a href="${news.url || 'javascript:void(0)'}" target="_blank" rel="noopener noreferrer" 
+                   style="text-decoration: none; color: inherit; display: block;">
+                    <div class="finance-news-item">
+                        <div class="finance-news-item-title">${news.title}</div>
+                        <div class="finance-news-item-meta">
+                            <span class="finance-news-tag">${news.tag}</span>
+                            <span>${news.time}</span>
+                        </div>
                     </div>
-                </div>
+                </a>
             `).join('');
         }
 
