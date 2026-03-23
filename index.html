@@ -668,65 +668,40 @@
         <section class="section active" id="section-hot">
             <div class="pull-hint">👇 下拉查看更多内容</div>
             
-            <!-- 金融资讯 Card -->
-            <div class="card">
-                <div class="card-header">
+            <!-- 金融资讯 - 仪表盘风格 (1/4屏幕) -->
+            <div class="card" style="margin-bottom: 8px;">
+                <div class="card-header" style="padding: 10px 12px;">
                     <div class="card-title-section">
-                        <div class="card-icon card-icon-finance">📊</div>
+                        <div class="card-icon card-icon-finance" style="width:32px;height:32px;">📊</div>
                         <div>
-                            <div class="card-title">金融资讯</div>
-                            <div class="card-subtitle">实时行情 · 新浪财经 API</div>
+                            <div class="card-title" style="font-size:14px;">金融行情</div>
                         </div>
                     </div>
                 </div>
-                <div class="card-content">
+                <div class="card-content" style="padding: 8px 12px;">
                     <!-- 金融品种 Tab -->
-                    <div class="finance-tabs">
-                        <div class="finance-tab active" data-finance="gold">🥇 黄金</div>
-                        <div class="finance-tab" data-finance="usdt">💵 USDT</div>
-                        <div class="finance-tab" data-finance="usd">💲 美元</div>
-                        <div class="finance-tab" data-finance="a-stock">🇨🇳 A股</div>
+                    <div class="finance-tabs" style="margin-bottom:8px;">
+                        <div class="finance-tab active" data-finance="gold" style="padding:4px 10px;font-size:11px;">🥇</div>
+                        <div class="finance-tab" data-finance="usdt" style="padding:4px 10px;font-size:11px;">💵</div>
+                        <div class="finance-tab" data-finance="usd" style="padding:4px 10px;font-size:11px;">💲</div>
+                        <div class="finance-tab" data-finance="a-stock" style="padding:4px 10px;font-size:11px;">📈</div>
                     </div>
                     
-                    <!-- 金融价格显示 -->
-                    <div class="finance-display" id="finance-display">
-                        <div class="finance-price" id="finance-price">¥693.50</div>
-                        <div class="finance-change up" id="finance-change">
-                            <span>📈</span>
-                            <span>+2.8% 较昨日</span>
+                    <!-- 紧凑价格显示 -->
+                    <div style="display:flex;align-items:center;justify-content:space-between;">
+                        <div>
+                            <div class="finance-price" id="finance-price" style="font-size:24px;">¥693.50</div>
+                            <div class="finance-change up" id="finance-change" style="font-size:11px;padding:4px 8px;">
+                                <span>📈</span><span>+2.8%</span>
+                            </div>
+                        </div>
+                        <div style="text-align:right;font-size:10px;color:#999;">
+                            <div>今开: <span id="finance-open">¥688.50</span></div>
+                            <div>最高: <span id="finance-high">¥693.50</span></div>
                         </div>
                     </div>
-                    
-                    <!-- 金融统计 -->
-                    <div class="finance-stats" id="finance-stats">
-                        <div class="finance-stat">
-                            <div class="finance-stat-label">今开</div>
-                            <div class="finance-stat-value">¥688.50</div>
-                        </div>
-                        <div class="finance-stat">
-                            <div class="finance-stat-label">最高</div>
-                            <div class="finance-stat-value">¥693.50</div>
-                        </div>
-                        <div class="finance-stat">
-                            <div class="finance-stat-label">最低</div>
-                            <div class="finance-stat-value">¥688.50</div>
-                        </div>
-                        <div class="finance-stat">
-                            <div class="finance-stat-label">昨收</div>
-                            <div class="finance-stat-value">¥690.50</div>
-                        </div>
-                    </div>
-                    
-                    <!-- API 状态和走势图 -->
-                    <div class="finance-chart">
-                        <div class="api-status" id="api-status">
-                            <div class="api-dot" style="background: #10b981;"></div>
-                            <span>✅ 新浪财经 API 已连接</span>
-                        </div>
-                        <div style="font-size: 11px; color: #999; margin-top: 4px;">
-                            📈 实时数据来自: 49.233.160.118:3001
-                        </div>
-                    </div>
+                </div>
+            </div>
                     
                     <!-- 相关资讯 -->
                     <div class="finance-news">
@@ -784,6 +759,51 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 热门推荐 - 抖音+娱乐 -->
+            <div class="card" style="margin-top:8px;">
+                <div class="card-header" style="padding:10px 12px;">
+                    <div class="card-title-section">
+                        <div class="card-icon card-icon-pink" style="width:32px;height:32px;">🎬</div>
+                        <div>
+                            <div class="card-title" style="font-size:14px;">热门推荐</div>
+                            <div class="card-subtitle">抖音 · 娱乐 · 综艺</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-content" style="padding:8px 12px;">
+                    <div style="margin-bottom:12px;">
+                        <div style="font-size:12px;font-weight:600;color:#333;margin-bottom:8px;">🎵 抖音热点</div>
+                        <a href="https://www.douyin.com/" target="_blank" style="text-decoration:none;">
+                            <div style="padding:8px;background:#f8fafc;border-radius:8px;margin-bottom:6px;">
+                                <div style="font-size:13px;color:#333;">重温总书记关于治水的重要论述</div>
+                                <div style="font-size:11px;color:#999;margin-top:4px;"><span style="background:#fce7f3;color:#be185d;padding:2px 8px;border-radius:10px;font-size:10px;">热点</span> 125.8万 人在看</div>
+                            </div>
+                        </a>
+                        <a href="https://www.douyin.com/" target="_blank" style="text-decoration:none;">
+                            <div style="padding:8px;background:#f8fafc;border-radius:8px;">
+                                <div style="font-size:13px;color:#333;">探访全国唯一海上有人值守气象站</div>
+                                <div style="font-size:11px;color:#999;margin-top:4px;"><span style="background:#fef3c7;color:#b45309;padding:2px 8px;border-radius:10px;font-size:10px;">上升</span> 89.3万 人在看</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div>
+                        <div style="font-size:12px;font-weight:600;color:#333;margin-bottom:8px;">🎭 娱乐资讯</div>
+                        <a href="https://ent.sina.com.cn/" target="_blank" style="text-decoration:none;">
+                            <div style="padding:8px;background:#f8fafc;border-radius:8px;margin-bottom:6px;">
+                                <div style="font-size:13px;color:#333;">知名演员新剧开机引热议</div>
+                                <div style="font-size:11px;color:#999;">娱乐 · 刚刚</div>
+                            </div>
+                        </a>
+                        <a href="https://ent.sina.com.cn/" target="_blank" style="text-decoration:none;">
+                            <div style="padding:8px;background:#f8fafc;border-radius:8px;">
+                                <div style="font-size:13px;color:#333;">综艺《奔跑吧》最新一期收视率夺冠</div>
+                                <div style="font-size:11px;color:#999;">综艺 · 10分钟前</div>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
