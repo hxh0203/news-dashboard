@@ -761,59 +761,26 @@
                 </div>
             </div>
             
-            <!-- Hot Topics Card -->
+            <!-- 微博热搜 Card -->
             <div class="card">
                 <div class="card-header">
                     <div class="card-title-section">
                         <div class="card-icon card-icon-hot">🔥</div>
                         <div>
-                            <div class="card-title">百度热搜</div>
-                            <div class="card-subtitle">实时更新</div>
+                            <div class="card-title">微博热搜</div>
+                            <div class="card-subtitle" id="weibo-update-time">实时更新 · 每5分钟刷新</div>
                         </div>
                     </div>
-                    <div class="card-more">更多 ></div>
+                    <div class="card-more" onclick="refreshWeibo()" style="cursor:pointer;">🔄 刷新</div>
                 </div>
                 <div class="card-content">
-                    <div class="topic-list">
+                    <div class="topic-list" id="weibo-topic-list">
+                        <!-- 微博热搜将通过API加载 -->
                         <div class="topic-item">
                             <div class="topic-rank topic-rank-1">1</div>
                             <div class="topic-content">
                                 <div style="display:flex;align-items:center;">
-                                    <span class="topic-title">多名配音演员集体维权</span>
-                                    <span class="hot-badge hot-badge-bao">爆</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="topic-item">
-                            <div class="topic-rank topic-rank-2">2</div>
-                            <div class="topic-content">
-                                <div style="display:flex;align-items:center;">
-                                    <span class="topic-title">跑马拉松护航的民警居然是AI机器人</span>
-                                    <span class="hot-badge hot-badge-xin">新</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="topic-item">
-                            <div class="topic-rank topic-rank-3">3</div>
-                            <div class="topic-content">
-                                <div style="display:flex;align-items:center;">
-                                    <span class="topic-title">这五个"强国"透露哪些信号</span>
-                                    <span class="hot-badge hot-badge-re">热</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="topic-item">
-                            <div class="topic-rank topic-rank-other">4</div>
-                            <div class="topic-content">
-                                <span class="topic-title">吉林省委书记：留下烂摊子要追责</span>
-                            </div>
-                        </div>
-                        <div class="topic-item">
-                            <div class="topic-rank topic-rank-other">5</div>
-                            <div class="topic-content">
-                                <div style="display:flex;align-items:center;">
-                                    <span class="topic-title">《逐玉》全集泄露损失不可估量</span>
-                                    <span class="hot-badge hot-badge-xin">新</span>
+                                    <span class="topic-title">加载中...</span>
                                 </div>
                             </div>
                         </div>
@@ -1243,8 +1210,119 @@
             }
         }
 
-        // 初始化
+        // ==================== 微博热搜 ====================
+        const WEIBO_API = 'http://49.233.160.118:3001/api/weibo';
+        
+        // 微博热搜定时器
+        let weiboRefreshTimer = null;
+        
+        // 获取微博热搜
+        async function fetchWeiboHot() {
+            try {
+                console.log('正在获取微博热搜...');
+                const response = await fetch(WEIBO_API, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    console.log('✅ 微博热搜获取成功:', result.data);
+                    return result.data;
+                } else {
+                    console.log('⚠️ 微博热搜使用备用数据');
+                    return result.fallback || [];
+                }
+            } catch (error) {
+                console.error('❌ 微博热搜获取失败:', error);
+                return [];
+            }
+        }
+        
+        // 更新微博热搜列表
+        function updateWeiboList(topics) {
+            const listEl = document.getElementById('weibo-topic-list');
+            const timeEl = document.getElementById('weibo-update-time');
+            
+            if (!listEl || !topics || topics.length === 0) {
+                listEl.innerHTML = `
+                    <div class="topic-item">
+                        <div class="topic-rank topic-rank-other">-</div>
+                        <div class="topic-content">
+                            <span class="topic-title">暂无数据</span>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            // 更新时间显示
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+            if (timeEl) timeEl.textContent = `更新时间 ${timeStr} · 每5分钟刷新`;
+            
+            // 渲染热搜列表 (只显示前5条)
+            const top5 = topics.slice(0, 5);
+            listEl.innerHTML = top5.map((topic, index) => {
+                const rankClass = index === 0 ? 'topic-rank-1' : 
+                                  index === 1 ? 'topic-rank-2' : 
+                                  index === 2 ? 'topic-rank-3' : 'topic-rank-other';
+                
+                const label = topic.label ? `<span class="hot-badge hot-badge-bao">${topic.label}</span>` : '';
+                const url = topic.url || `https://s.weibo.com/weibo?q=${encodeURIComponent(topic.title)}`;
+                
+                return `
+                    <a href="${url}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block;">
+                        <div class="topic-item">
+                            <div class="topic-rank ${rankClass}">${topic.rank}</div>
+                            <div class="topic-content">
+                                <div style="display:flex;align-items:center;">
+                                    <span class="topic-title">${topic.title}</span>
+                                    ${label}
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                `;
+            }).join('');
+        }
+        
+        // 刷新微博热搜
+        async function refreshWeibo() {
+            const listEl = document.getElementById('weibo-topic-list');
+            listEl.innerHTML = `
+                <div class="topic-item">
+                    <div class="topic-rank topic-rank-other">...</div>
+                    <div class="topic-content">
+                        <span class="topic-title">正在刷新...</span>
+                    </div>
+                </div>
+            `;
+            
+            const topics = await fetchWeiboHot();
+            updateWeiboList(topics);
+        }
+        
+        // 启动微博热搜自动刷新 (每5分钟)
+        function startWeiboAutoRefresh() {
+            // 立即获取一次
+            refreshWeibo();
+            
+            // 设置5分钟定时刷新
+            weiboRefreshTimer = setInterval(() => {
+                console.log('⏰ 微博热搜自动刷新...');
+                refreshWeibo();
+            }, 5 * 60 * 1000); // 5分钟
+            
+            console.log('✅ 微博热搜自动刷新已启动 (每5分钟)');
+        }
+        
+        // ==================== 初始化 ====================
         (async function init() {
+            // 启动微博热搜自动刷新
+            startWeiboAutoRefresh();
+            
             // 先检查 API 状态
             await checkApiStatus();
             // 然后加载黄金数据
