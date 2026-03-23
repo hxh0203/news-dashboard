@@ -719,12 +719,12 @@
                     
                     <!-- API 状态和走势图 -->
                     <div class="finance-chart">
-                        <div class="api-status">
-                            <div class="api-dot"></div>
-                            <span>API 接入中...</span>
+                        <div class="api-status" id="api-status">
+                            <div class="api-dot" style="background: #10b981;"></div>
+                            <span>✅ 新浪财经 API 已连接</span>
                         </div>
                         <div style="font-size: 11px; color: #999; margin-top: 4px;">
-                            📈 实时走势图 (准备接入新浪财经)
+                            📈 实时数据来自: 49.233.160.118:3001
                         </div>
                     </div>
                     
@@ -1067,15 +1067,57 @@
         // 当前选中的金融品种
         let currentFinanceType = 'gold';
 
-        // 从 API 获取数据
+        // 后端 API 地址
+        const API_BASE = 'http://49.233.160.118:3001';
+        
+        // API 端点映射
+        const API_ENDPOINTS = {
+            'gold': '/api/gold',
+            'usd': '/api/usd',
+            'a-stock': '/api/sh',
+            'usdt': '/api/usdt'
+        };
+        
+        // 从后端 API 获取数据
         async function fetchFinanceData(type) {
             try {
-                // 由于新浪财经有 CORS 限制，这里先用模拟数据
-                // 实际部署时需要后端代理
-                const data = mockFinanceData[type];
-                return data;
+                console.log(`正在获取 ${type} 数据...`);
+                const endpoint = API_BASE + API_ENDPOINTS[type];
+                
+                const response = await fetch(endpoint, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('API 请求失败');
+                }
+                
+                const result = await response.json();
+                
+                if (result.success && result.data) {
+                    console.log(`${type} 数据获取成功:`, result.data);
+                    // 转换后端数据为前端格式
+                    return {
+                        price: result.data.price,
+                        change: result.data.change,
+                        changeType: result.data.changeType,
+                        stats: {
+                            open: result.data.open,
+                            high: result.data.high,
+                            low: result.data.low,
+                            close: result.data.close
+                        },
+                        news: mockFinanceData[type].news // 暂时用模拟资讯
+                    };
+                } else {
+                    throw new Error('数据格式错误');
+                }
             } catch (error) {
-                console.log('API 获取失败，使用模拟数据');
+                console.error('API 获取失败:', error.message);
+                console.log('使用模拟数据');
                 return mockFinanceData[type];
             }
         }
@@ -1181,8 +1223,28 @@
             });
         });
 
-        // 初始化显示黄金数据
+        // 检查 API 状态
+        async function checkApiStatus() {
+            try {
+                const response = await fetch(API_BASE + '/api/health');
+                const result = await response.json();
+                if (result.status === 'ok') {
+                    console.log('✅ 后端 API 连接正常');
+                    document.querySelector('#api-status span').textContent = '✅ 新浪财经 API 已连接';
+                    document.querySelector('#api-status .api-dot').style.background = '#10b981';
+                }
+            } catch (error) {
+                console.log('❌ 后端 API 连接失败:', error.message);
+                document.querySelector('#api-status span').textContent = '⚠️ 使用模拟数据';
+                document.querySelector('#api-status .api-dot').style.background = '#fbbf24';
+            }
+        }
+
+        // 初始化
         (async function init() {
+            // 先检查 API 状态
+            await checkApiStatus();
+            // 然后加载黄金数据
             const data = await fetchFinanceData('gold');
             updateFinanceDisplay(data);
         })();
