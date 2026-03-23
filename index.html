@@ -159,8 +159,8 @@
             font-size: 18px;
         }
         
-        .card-icon-gold {
-            background: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
+        .card-icon-finance {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
         
         .card-icon-hot {
@@ -201,57 +201,159 @@
             padding: 12px 16px;
         }
         
-        /* Gold Price - 手机端优化 */
-        .gold-price-display {
-            text-align: center;
-            padding: 16px 0;
+        /* Finance Dashboard - 金融资讯仪表盘 */
+        .finance-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+            padding-bottom: 4px;
         }
         
-        .gold-price {
-            font-size: 36px;
+        .finance-tab {
+            flex-shrink: 0;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            background: #f0f0f0;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .finance-tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .finance-display {
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        .finance-price {
+            font-size: 42px;
             font-weight: bold;
-            background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            margin-bottom: 8px;
         }
         
-        .gold-change {
+        .finance-change {
             display: inline-flex;
             align-items: center;
-            gap: 4px;
-            font-size: 14px;
-            color: #10b981;
-            margin-top: 8px;
+            gap: 6px;
+            font-size: 15px;
+            padding: 8px 16px;
+            border-radius: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .finance-change.up {
             background: #d1fae5;
-            padding: 6px 12px;
-            border-radius: 20px;
+            color: #059669;
         }
         
-        .gold-stats {
+        .finance-change.down {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        
+        .finance-stats {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 16px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
         }
         
-        .gold-stat {
-            text-align: center;
-            padding: 12px 8px;
-            background: #f9fafb;
+        .finance-stat {
+            background: #f8fafc;
             border-radius: 12px;
+            padding: 14px;
+            text-align: left;
         }
         
-        .gold-stat-label {
+        .finance-stat-label {
             font-size: 11px;
             color: #999;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
         
-        .gold-stat-value {
+        .finance-stat-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .finance-chart {
+            margin-top: 16px;
+            height: 150px;
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #667eea;
+            font-size: 13px;
+        }
+        
+        .finance-news {
+            margin-top: 16px;
+            border-top: 1px solid #f0f0f0;
+            padding-top: 16px;
+        }
+        
+        .finance-news-title {
             font-size: 14px;
             font-weight: 600;
             color: #333;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .finance-news-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .finance-news-item {
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .finance-news-item:active {
+            background: #f0f0f0;
+        }
+        
+        .finance-news-item-title {
+            font-size: 13px;
+            color: #333;
+            line-height: 1.4;
+            margin-bottom: 6px;
+        }
+        
+        .finance-news-item-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #999;
+        }
+        
+        .finance-news-tag {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 10px;
         }
         
         /* Topic List - 手机端优化 */
@@ -544,37 +646,88 @@
         <section class="section active" id="section-hot">
             <div class="pull-hint">👇 下拉查看更多内容</div>
             
-            <!-- Gold Price Card -->
+            <!-- 金融资讯 Card -->
             <div class="card">
                 <div class="card-header">
                     <div class="card-title-section">
-                        <div class="card-icon card-icon-gold">💰</div>
+                        <div class="card-icon card-icon-finance">📊</div>
                         <div>
-                            <div class="card-title">黄金价格</div>
-                            <div class="card-subtitle">人民币/克</div>
+                            <div class="card-title">金融资讯</div>
+                            <div class="card-subtitle">实时行情 · 专业数据</div>
                         </div>
                     </div>
                 </div>
                 <div class="card-content">
-                    <div class="gold-price-display">
-                        <div class="gold-price">¥693.50</div>
-                        <div class="gold-change">
+                    <!-- 金融品种 Tab -->
+                    <div class="finance-tabs">
+                        <div class="finance-tab active" data-finance="gold">🥇 黄金</div>
+                        <div class="finance-tab" data-finance="usdt">💵 USDT</div>
+                        <div class="finance-tab" data-finance="usd">💲 美元</div>
+                        <div class="finance-tab" data-finance="a-stock">🇨🇳 A股</div>
+                    </div>
+                    
+                    <!-- 黄金价格显示 -->
+                    <div class="finance-display" id="finance-display">
+                        <div class="finance-price" id="finance-price">¥693.50</div>
+                        <div class="finance-change up" id="finance-change">
                             <span>📈</span>
                             <span>+2.8% 较昨日</span>
                         </div>
                     </div>
-                    <div class="gold-stats">
-                        <div class="gold-stat">
-                            <div class="gold-stat-label">今开</div>
-                            <div class="gold-stat-value">¥688.50</div>
+                    
+                    <!-- 金融统计 -->
+                    <div class="finance-stats" id="finance-stats">
+                        <div class="finance-stat">
+                            <div class="finance-stat-label">今开</div>
+                            <div class="finance-stat-value">¥688.50</div>
                         </div>
-                        <div class="gold-stat">
-                            <div class="gold-stat-label">最高</div>
-                            <div class="gold-stat-value">¥693.50</div>
+                        <div class="finance-stat">
+                            <div class="finance-stat-label">最高</div>
+                            <div class="finance-stat-value">¥693.50</div>
                         </div>
-                        <div class="gold-stat">
-                            <div class="gold-stat-label">最低</div>
-                            <div class="gold-stat-value">¥688.50</div>
+                        <div class="finance-stat">
+                            <div class="finance-stat-label">最低</div>
+                            <div class="finance-stat-value">¥688.50</div>
+                        </div>
+                        <div class="finance-stat">
+                            <div class="finance-stat-label">昨收</div>
+                            <div class="finance-stat-value">¥690.50</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 走势图占位 -->
+                    <div class="finance-chart">
+                        📈 价格走势图 (API接入中)
+                    </div>
+                    
+                    <!-- 相关资讯 -->
+                    <div class="finance-news">
+                        <div class="finance-news-title">
+                            <span>📰</span>
+                            <span>相关资讯</span>
+                        </div>
+                        <div class="finance-news-list" id="finance-news-list">
+                            <div class="finance-news-item">
+                                <div class="finance-news-item-title">金价突破重要阻力位，后市看涨</div>
+                                <div class="finance-news-item-meta">
+                                    <span class="finance-news-tag">黄金</span>
+                                    <span>10分钟前</span>
+                                </div>
+                            </div>
+                            <div class="finance-news-item">
+                                <div class="finance-news-item-title">美联储政策会议在即，市场观望情绪浓厚</div>
+                                <div class="finance-news-item-meta">
+                                    <span class="finance-news-tag">宏观</span>
+                                    <span>30分钟前</span>
+                                </div>
+                            </div>
+                            <div class="finance-news-item">
+                                <div class="finance-news-item-title">A股三大指数集体高开，科技板块领涨</div>
+                                <div class="finance-news-item-meta">
+                                    <span class="finance-news-tag">A股</span>
+                                    <span>1小时前</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -810,7 +963,7 @@
         <footer class="footer">
             <div class="footer-monkey">🐵</div>
             <p>猴资讯 · 小猴子为你服务</p>
-            <p>数据仅供参考</p>
+            <p>数据仅供参考 · API接入中</p>
         </footer>
     </main>
 
@@ -835,6 +988,129 @@
     </nav>
 
     <script>
+        // 金融数据
+        const financeData = {
+            gold: {
+                price: '¥693.50',
+                change: '+2.8%',
+                changeType: 'up',
+                stats: {
+                    open: '¥688.50',
+                    high: '¥693.50',
+                    low: '¥688.50',
+                    close: '¥690.50'
+                },
+                news: [
+                    { title: '金价突破重要阻力位，后市看涨', tag: '黄金', time: '10分钟前' },
+                    { title: '美联储政策会议在即，市场观望情绪浓厚', tag: '宏观', time: '30分钟前' },
+                    { title: '实物黄金需求增加，支撑金价上涨', tag: '黄金', time: '1小时前' }
+                ]
+            },
+            usdt: {
+                price: '¥7.245',
+                change: '+0.12%',
+                changeType: 'up',
+                stats: {
+                    open: '¥7.235',
+                    high: '¥7.250',
+                    low: '¥7.230',
+                    close: '¥7.238'
+                },
+                news: [
+                    { title: 'USDT 汇率稳定，市场信心回升', tag: 'USDT', time: '15分钟前' },
+                    { title: '加密货币市场整体回暖', tag: '加密', time: '45分钟前' },
+                    { title: '稳定币监管政策最新解读', tag: '政策', time: '2小时前' }
+                ]
+            },
+            usd: {
+                price: '¥7.242',
+                change: '-0.05%',
+                changeType: 'down',
+                stats: {
+                    open: '¥7.245',
+                    high: '¥7.250',
+                    low: '¥7.238',
+                    close: '¥7.246'
+                },
+                news: [
+                    { title: '美元指数小幅回调，人民币走强', tag: '美元', time: '20分钟前' },
+                    { title: '中美贸易关系新进展', tag: '宏观', time: '1小时前' },
+                    { title: '央行外汇储备数据公布', tag: '政策', time: '3小时前' }
+                ]
+            },
+            'a-stock': {
+                price: '3,245.67',
+                change: '+1.25%',
+                changeType: 'up',
+                stats: {
+                    open: '3,225.50',
+                    high: '3,250.80',
+                    low: '3,210.20',
+                    close: '3,205.42'
+                },
+                news: [
+                    { title: 'A股三大指数集体高开，科技板块领涨', tag: 'A股', time: '10分钟前' },
+                    { title: '北向资金持续净流入', tag: '资金', time: '40分钟前' },
+                    { title: '券商看好后市走势', tag: '分析', time: '2小时前' }
+                ]
+            }
+        };
+
+        // 更新金融数据显示
+        function updateFinanceDisplay(type) {
+            const data = financeData[type];
+            const priceEl = document.getElementById('finance-price');
+            const changeEl = document.getElementById('finance-change');
+            const statsEl = document.getElementById('finance-stats');
+            const newsEl = document.getElementById('finance-news-list');
+            
+            // 更新价格
+            priceEl.textContent = data.price;
+            
+            // 更新涨跌幅
+            changeEl.className = 'finance-change ' + data.changeType;
+            changeEl.innerHTML = `
+                <span>${data.changeType === 'up' ? '📈' : '📉'}</span>
+                <span>${data.change} 较昨日</span>
+            `;
+            
+            // 更新统计数据
+            const statLabels = ['今开', '最高', '最低', '昨收'];
+            const statValues = [data.stats.open, data.stats.high, data.stats.low, data.stats.close];
+            statsEl.innerHTML = statValues.map((val, i) => `
+                <div class="finance-stat">
+                    <div class="finance-stat-label">${statLabels[i]}</div>
+                    <div class="finance-stat-value">${val}</div>
+                </div>
+            `).join('');
+            
+            // 更新相关资讯
+            newsEl.innerHTML = data.news.map(news => `
+                <div class="finance-news-item">
+                    <div class="finance-news-item-title">${news.title}</div>
+                    <div class="finance-news-item-meta">
+                        <span class="finance-news-tag">${news.tag}</span>
+                        <span>${news.time}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 金融 Tab 切换
+        const financeTabs = document.querySelectorAll('.finance-tab');
+        financeTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const type = this.getAttribute('data-finance');
+                
+                // 更新 tab 样式
+                financeTabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // 更新数据显示
+                updateFinanceDisplay(type);
+            });
+        });
+
         // 更新时间
         function updateTime() {
             const now = new Date();
@@ -849,7 +1125,7 @@
         updateTime();
         setInterval(updateTime, 60000);
 
-        // Tab 切换
+        // 底部 Tab 切换
         const tabItems = document.querySelectorAll('.tab-item');
         const sections = document.querySelectorAll('.section');
 
@@ -871,7 +1147,7 @@
         });
 
         // 点击反馈
-        document.querySelectorAll('.topic-item, .news-item, .douyin-item, .food-item').forEach(item => {
+        document.querySelectorAll('.topic-item, .news-item, .douyin-item, .food-item, .finance-news-item').forEach(item => {
             item.addEventListener('click', function() {
                 this.style.background = '#f0f0f0';
                 setTimeout(() => {
@@ -879,6 +1155,9 @@
                 }, 150);
             });
         });
+
+        // 初始化显示黄金数据
+        updateFinanceDisplay('gold');
     </script>
 </body>
 </html>
