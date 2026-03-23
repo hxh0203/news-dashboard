@@ -2,526 +2,567 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>热点速查 - 你的资讯小助手</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>猴资讯 🐵</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent;
         }
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(to bottom right, #f8fafc, #f1f5f9);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
             min-height: 100vh;
+            padding-bottom: 80px;
         }
+        
+        /* Header - 手机端优化 */
         .header {
             position: sticky;
             top: 0;
-            z-index: 50;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid #e2e8f0;
+            z-index: 100;
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            padding: 12px 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
+        
         .header-content {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 1rem;
-            height: 64px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
+        
         .logo-section {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
+        
         .logo-icon {
             width: 40px;
             height: 40px;
-            background: linear-gradient(to bottom right, #3b82f6, #8b5cf6);
+            background: rgba(255,255,255,0.3);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 24px;
         }
+        
         .logo-title {
-            font-size: 1.25rem;
+            font-size: 20px;
             font-weight: bold;
-            background: linear-gradient(to right, #2563eb, #9333ea);
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .current-time {
+            font-size: 12px;
+            color: rgba(255,255,255,0.9);
+            background: rgba(0,0,0,0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+        
+        /* Tab Navigation - 手机端底部导航 */
+        .tab-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            padding-bottom: max(8px, env(safe-area-inset-bottom));
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+        
+        .tab-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .tab-item.active {
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+        }
+        
+        .tab-item.active .tab-icon,
+        .tab-item.active .tab-text {
+            color: white;
+        }
+        
+        .tab-icon {
+            font-size: 20px;
+            color: #666;
+        }
+        
+        .tab-text {
+            font-size: 11px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 12px;
+        }
+        
+        /* Section - 手机端卡片 */
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        
+        .card-header {
+            padding: 14px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .card-title-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .card-icon-gold {
+            background: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
+        }
+        
+        .card-icon-hot {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+        }
+        
+        .card-icon-global {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .card-icon-douyin {
+            background: linear-gradient(135deg, #fe5196 0%, #f77062 100%);
+        }
+        
+        .card-icon-food {
+            background: linear-gradient(135deg, #a8e063 0%, #56ab2f 100%);
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .card-subtitle {
+            font-size: 12px;
+            color: #999;
+            margin-top: 2px;
+        }
+        
+        .card-more {
+            font-size: 12px;
+            color: #ff6b6b;
+            font-weight: 500;
+        }
+        
+        .card-content {
+            padding: 12px 16px;
+        }
+        
+        /* Gold Price - 手机端优化 */
+        .gold-price-display {
+            text-align: center;
+            padding: 16px 0;
+        }
+        
+        .gold-price {
+            font-size: 36px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        .logo-subtitle {
-            font-size: 0.75rem;
-            color: #64748b;
-        }
-        .main-content {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-        .gold-section {
-            margin-bottom: 2rem;
-            overflow: hidden;
-            border-radius: 16px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            background: linear-gradient(to right, #fffbeb, #fef3c7);
-        }
-        .gold-container {
-            display: flex;
-            flex-direction: column;
-        }
-        @media (min-width: 1024px) {
-            .gold-container {
-                flex-direction: row;
-            }
-        }
-        .gold-info {
-            flex: 1;
-            padding: 1.5rem 2rem;
-        }
-        .gold-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-        }
-        .gold-title-section {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .gold-icon {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(to bottom right, #facc15, #f59e0b);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-        .gold-title {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: #1e293b;
-        }
-        .gold-subtitle {
-            font-size: 0.875rem;
-            color: #64748b;
-        }
-        .gold-badge {
+        
+        .gold-change {
             display: inline-flex;
             align-items: center;
-            border-radius: 9999px;
-            padding: 0.25rem 0.625rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            background: #dcfce7;
-            color: #15803d;
+            gap: 4px;
+            font-size: 14px;
+            color: #10b981;
+            margin-top: 8px;
+            background: #d1fae5;
+            padding: 6px 12px;
+            border-radius: 20px;
         }
-        .gold-price-display {
-            margin-bottom: 1.5rem;
-        }
-        .gold-price {
-            font-size: 2.25rem;
-            font-weight: bold;
-            color: #1e293b;
-            margin-bottom: 0.25rem;
-        }
-        .gold-change {
-            display: flex;
-            align-items: center;
-            font-size: 0.875rem;
-            color: #16a34a;
-        }
+        
         .gold-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
+            gap: 10px;
+            margin-top: 16px;
         }
+        
         .gold-stat {
             text-align: center;
-            padding: 0.75rem;
-            background: rgba(255, 255, 255, 0.5);
+            padding: 12px 8px;
+            background: #f9fafb;
             border-radius: 12px;
         }
+        
         .gold-stat-label {
-            font-size: 0.75rem;
-            color: #64748b;
-            margin-bottom: 0.25rem;
+            font-size: 11px;
+            color: #999;
+            margin-bottom: 4px;
         }
+        
         .gold-stat-value {
+            font-size: 14px;
             font-weight: 600;
-            color: #334155;
+            color: #333;
         }
-        .gold-chart {
-            flex: 1;
-            min-height: 300px;
-            padding: 1.5rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .chart-placeholder {
-            width: 100%;
-            height: 250px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #94a3b8;
-        }
-        .grid-layout {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-        @media (min-width: 1024px) {
-            .grid-layout {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        .card {
-            border-radius: 16px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            background: white;
-            overflow: hidden;
-        }
-        .card-header {
-            padding: 1.5rem 1.5rem 1rem;
-        }
-        .card-title-section {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .card-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .card-icon-red {
-            background: linear-gradient(to bottom right, #ef4444, #f97316);
-        }
-        .card-icon-blue {
-            background: linear-gradient(to bottom right, #3b82f6, #06b6d4);
-        }
-        .card-icon-pink {
-            background: linear-gradient(to bottom right, #ec4899, #f43f5e);
-        }
-        .card-icon-green {
-            background: linear-gradient(to bottom right, #22c55e, #10b981);
-        }
-        .card-title {
-            font-size: 1.125rem;
-            font-weight: 600;
-        }
-        .card-subtitle {
-            font-size: 0.875rem;
-            color: #64748b;
-        }
-        .card-content {
-            padding: 0 1.5rem 1.5rem;
-        }
+        
+        /* Topic List - 手机端优化 */
         .topic-list {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
+            gap: 0;
         }
+        
         .topic-item {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: background-color 0.2s;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid #f5f5f5;
         }
-        .topic-item:hover {
-            background-color: #f8fafc;
+        
+        .topic-item:last-child {
+            border-bottom: none;
         }
+        
         .topic-rank {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 0.875rem;
+            font-size: 14px;
+            flex-shrink: 0;
         }
-        .topic-rank-top {
-            background: linear-gradient(to bottom right, #ef4444, #f97316);
+        
+        .topic-rank-1 {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
             color: white;
         }
-        .topic-rank-other {
-            background: #f1f5f9;
-            color: #475569;
+        
+        .topic-rank-2 {
+            background: linear-gradient(135deg, #ffa500 0%, #ff8c00 100%);
+            color: white;
         }
+        
+        .topic-rank-3 {
+            background: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
+            color: white;
+        }
+        
+        .topic-rank-other {
+            background: #f0f0f0;
+            color: #666;
+        }
+        
         .topic-content {
             flex: 1;
             min-width: 0;
         }
-        .topic-title-row {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+        
         .topic-title {
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: #1e293b;
+            font-size: 14px;
+            color: #333;
+            line-height: 1.4;
             overflow: hidden;
             text-overflow: ellipsis;
-            white-space: nowrap;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
         }
-        .topic-title:hover {
-            color: #2563eb;
-        }
+        
         .hot-badge {
-            padding: 0.125rem 0.375rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 10px;
             color: white;
+            margin-left: 6px;
+            flex-shrink: 0;
         }
+        
         .hot-badge-bao {
-            background-color: #ef4444;
+            background: #ff4757;
         }
+        
         .hot-badge-xin {
-            background-color: #f97316;
+            background: #ff6b81;
         }
+        
         .hot-badge-re {
-            background-color: #eab308;
+            background: #ffa502;
         }
+        
+        /* News List - 手机端优化 */
         .news-list {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 0;
         }
+        
         .news-item {
-            padding: 1rem;
-            border-radius: 12px;
-            border: 1px solid #f1f5f9;
-            cursor: pointer;
-            transition: background-color 0.2s;
+            padding: 14px 0;
+            border-bottom: 1px solid #f5f5f5;
         }
-        .news-item:hover {
-            background-color: #f8fafc;
+        
+        .news-item:last-child {
+            border-bottom: none;
         }
+        
         .news-title {
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: #1e293b;
-            margin-bottom: 0.5rem;
-            line-height: 1.6;
+            font-size: 14px;
+            color: #333;
+            line-height: 1.5;
+            margin-bottom: 8px;
         }
-        .news-title:hover {
-            color: #2563eb;
-        }
+        
         .news-meta {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 0.75rem;
-            color: #64748b;
         }
+        
         .news-source {
             display: inline-flex;
             align-items: center;
-            padding: 0.25rem 0.625rem;
-            border-radius: 9999px;
-            background: #f1f5f9;
-            color: #475569;
-            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 12px;
+            background: #f0f0f0;
+            color: #666;
+            font-size: 11px;
+            font-weight: 500;
         }
+        
+        .news-time {
+            font-size: 11px;
+            color: #999;
+        }
+        
+        /* Douyin List - 手机端优化 */
         .douyin-list {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
+            gap: 0;
         }
+        
         .douyin-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.75rem;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: background-color 0.2s;
+            padding: 14px 0;
+            border-bottom: 1px solid #f5f5f5;
         }
-        .douyin-item:hover {
-            background-color: #f8fafc;
+        
+        .douyin-item:last-child {
+            border-bottom: none;
         }
-        .douyin-content {
-            flex: 1;
-            min-width: 0;
-        }
+        
         .douyin-title {
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: #1e293b;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            margin-bottom: 0.25rem;
+            font-size: 14px;
+            color: #333;
+            line-height: 1.4;
+            margin-bottom: 8px;
         }
-        .douyin-title:hover {
-            color: #db2777;
-        }
+        
         .douyin-meta {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 8px;
         }
+        
         .douyin-tag {
             display: inline-flex;
             align-items: center;
-            padding: 0.25rem 0.625rem;
-            border-radius: 9999px;
-            background: #fce7f3;
-            color: #be185d;
-            font-size: 0.75rem;
-            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 12px;
+            background: #fff0f5;
+            color: #ff1493;
+            font-size: 11px;
+            font-weight: 500;
         }
+        
         .douyin-hot {
-            font-size: 0.75rem;
-            color: #64748b;
+            font-size: 11px;
+            color: #999;
         }
+        
+        /* Food Grid - 手机端单列 */
         .food-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 0.75rem;
+            gap: 10px;
         }
-        @media (min-width: 640px) {
-            .food-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+        
         .food-item {
-            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: #f9fafb;
             border-radius: 12px;
-            border: 1px solid #f1f5f9;
-            cursor: pointer;
-            transition: background-color 0.2s;
         }
-        .food-item:hover {
-            background-color: #f8fafc;
+        
+        .food-info {
+            flex: 1;
         }
-        .food-header {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-        }
+        
         .food-name {
-            font-size: 0.875rem;
+            font-size: 15px;
             font-weight: 600;
-            color: #1e293b;
+            color: #333;
+            margin-bottom: 6px;
         }
-        .food-name:hover {
-            color: #16a34a;
-        }
-        .food-rating {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.25rem 0.625rem;
-            border-radius: 9999px;
-            background: #fef3c7;
-            color: #92400e;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-        .food-footer {
+        
+        .food-meta {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            font-size: 0.75rem;
-            color: #64748b;
+            gap: 8px;
         }
+        
         .food-category {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.25rem 0.625rem;
-            border-radius: 9999px;
-            background: #f1f5f9;
-            color: #475569;
-            font-weight: 600;
+            font-size: 11px;
+            color: #666;
+            background: white;
+            padding: 3px 8px;
+            border-radius: 8px;
         }
+        
+        .food-distance {
+            font-size: 11px;
+            color: #999;
+        }
+        
+        .food-right {
+            text-align: right;
+        }
+        
+        .food-rating {
+            font-size: 12px;
+            color: #ffa500;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
         .food-price {
-            font-weight: 600;
-            color: #16a34a;
+            font-size: 16px;
+            font-weight: bold;
+            color: #10b981;
         }
+        
+        /* Footer */
         .footer {
-            margin-top: 3rem;
             text-align: center;
-            font-size: 0.875rem;
-            color: #94a3b8;
+            padding: 20px 16px;
+            padding-bottom: 100px;
+            color: #999;
+            font-size: 12px;
         }
+        
         .footer p {
-            margin-bottom: 0.25rem;
+            margin-bottom: 4px;
+        }
+        
+        .footer-monkey {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        /* Pull to refresh hint */
+        .pull-hint {
+            text-align: center;
+            padding: 10px;
+            color: #999;
+            font-size: 12px;
         }
     </style>
 </head>
 <body>
+    <!-- Header -->
     <header class="header">
         <div class="header-content">
             <div class="logo-section">
-                <div class="logo-icon">
-                    <svg width="24" height="24" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24">
-                        <circle cx="11" cy="11" r="8"/>
-                        <path d="m21 21-4.35-4.35"/>
-                    </svg>
-                </div>
+                <div class="logo-icon">🐵</div>
                 <div>
-                    <div class="logo-title">热点速查</div>
-                    <div class="logo-subtitle">你的资讯小助手</div>
+                    <div class="logo-title">猴资讯</div>
                 </div>
             </div>
-            <div style="display: flex; align-items: center; gap: 1rem;">
-                <div style="font-size: 0.875rem; color: #475569; display: none; align-items: center;" id="currentTime"></div>
-            </div>
+            <div class="current-time" id="currentTime"></div>
         </div>
     </header>
 
+    <!-- Main Content -->
     <main class="main-content">
-        <!-- Gold Price Section -->
-        <section class="gold-section">
-            <div class="gold-container">
-                <div class="gold-info">
-                    <div class="gold-header">
-                        <div class="gold-title-section">
-                            <div class="gold-icon">
-                                <svg width="24" height="24" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24">
-                                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-                                    <polyline points="17 6 23 6 23 12"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <div class="gold-title">黄金价格</div>
-                                <div class="gold-subtitle">人民币/克</div>
-                            </div>
+        <!-- 热搜 Section -->
+        <section class="section active" id="section-hot">
+            <div class="pull-hint">👇 下拉查看更多内容</div>
+            
+            <!-- Gold Price Card -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title-section">
+                        <div class="card-icon card-icon-gold">💰</div>
+                        <div>
+                            <div class="card-title">黄金价格</div>
+                            <div class="card-subtitle">人民币/克</div>
                         </div>
-                        <span class="gold-badge">+2.8%</span>
                     </div>
-                    
+                </div>
+                <div class="card-content">
                     <div class="gold-price-display">
                         <div class="gold-price">¥693.50</div>
                         <div class="gold-change">
-                            <svg width="16" height="16" fill="none" stroke="#16a34a" stroke-width="2" viewBox="0 0 24 24" style="margin-right: 4px;">
-                                <polyline points="18 15 12 9 6 15"/>
-                                <polyline points="12 9 12 21"/>
-                            </svg>
-                            较昨日上涨 ¥2.35
+                            <span>📈</span>
+                            <span>+2.8% 较昨日</span>
                         </div>
                     </div>
-
                     <div class="gold-stats">
                         <div class="gold-stat">
                             <div class="gold-stat-label">今开</div>
@@ -537,56 +578,44 @@
                         </div>
                     </div>
                 </div>
-                
-                <div class="gold-chart">
-                    <div class="chart-placeholder">
-                        📈 黄金价格走势图
-                    </div>
-                </div>
             </div>
-        </section>
-
-        <!-- Grid Layout -->
-        <div class="grid-layout">
-            <!-- Daily Hot Topics -->
+            
+            <!-- Hot Topics Card -->
             <div class="card">
                 <div class="card-header">
                     <div class="card-title-section">
-                        <div class="card-icon card-icon-red">
-                            <svg width="20" height="20" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24">
-                                <path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
-                            </svg>
-                        </div>
+                        <div class="card-icon card-icon-hot">🔥</div>
                         <div>
-                            <div class="card-title">每日要闻</div>
-                            <div class="card-subtitle">百度热搜 · 实时更新</div>
+                            <div class="card-title">百度热搜</div>
+                            <div class="card-subtitle">实时更新</div>
                         </div>
                     </div>
+                    <div class="card-more">更多 ></div>
                 </div>
                 <div class="card-content">
                     <div class="topic-list">
                         <div class="topic-item">
-                            <div class="topic-rank topic-rank-top">1</div>
+                            <div class="topic-rank topic-rank-1">1</div>
                             <div class="topic-content">
-                                <div class="topic-title-row">
+                                <div style="display:flex;align-items:center;">
                                     <span class="topic-title">多名配音演员集体维权</span>
                                     <span class="hot-badge hot-badge-bao">爆</span>
                                 </div>
                             </div>
                         </div>
                         <div class="topic-item">
-                            <div class="topic-rank topic-rank-top">2</div>
+                            <div class="topic-rank topic-rank-2">2</div>
                             <div class="topic-content">
-                                <div class="topic-title-row">
+                                <div style="display:flex;align-items:center;">
                                     <span class="topic-title">跑马拉松护航的民警居然是AI机器人</span>
                                     <span class="hot-badge hot-badge-xin">新</span>
                                 </div>
                             </div>
                         </div>
                         <div class="topic-item">
-                            <div class="topic-rank topic-rank-top">3</div>
+                            <div class="topic-rank topic-rank-3">3</div>
                             <div class="topic-content">
-                                <div class="topic-title-row">
+                                <div style="display:flex;align-items:center;">
                                     <span class="topic-title">这五个"强国"透露哪些信号</span>
                                     <span class="hot-badge hot-badge-re">热</span>
                                 </div>
@@ -595,15 +624,13 @@
                         <div class="topic-item">
                             <div class="topic-rank topic-rank-other">4</div>
                             <div class="topic-content">
-                                <div class="topic-title-row">
-                                    <span class="topic-title">吉林省委书记：留下烂摊子要追责</span>
-                                </div>
+                                <span class="topic-title">吉林省委书记：留下烂摊子要追责</span>
                             </div>
                         </div>
                         <div class="topic-item">
                             <div class="topic-rank topic-rank-other">5</div>
                             <div class="topic-content">
-                                <div class="topic-title-row">
+                                <div style="display:flex;align-items:center;">
                                     <span class="topic-title">《逐玉》全集泄露损失不可估量</span>
                                     <span class="hot-badge hot-badge-xin">新</span>
                                 </div>
@@ -612,182 +639,200 @@
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- Global News -->
+        <!-- 新闻 Section -->
+        <section class="section" id="section-news">
             <div class="card">
                 <div class="card-header">
                     <div class="card-title-section">
-                        <div class="card-icon card-icon-blue">
-                            <svg width="20" height="20" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24">
-                                <circle cx="12" cy="12" r="10"/>
-                                <line x1="2" y1="12" x2="22" y2="12"/>
-                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-                            </svg>
-                        </div>
+                        <div class="card-icon card-icon-global">🌍</div>
                         <div>
                             <div class="card-title">全球新闻</div>
-                            <div class="card-subtitle">国际资讯 · 一手掌握</div>
+                            <div class="card-subtitle">国际资讯</div>
                         </div>
                     </div>
                 </div>
                 <div class="card-content">
                     <div class="news-list">
                         <div class="news-item">
-                            <h4 class="news-title">俄方：暗杀伊朗领导人产生极严重后果</h4>
+                            <div class="news-title">俄方：暗杀伊朗领导人产生极严重后果</div>
                             <div class="news-meta">
                                 <span class="news-source">环球时报</span>
-                                <span>10分钟前</span>
+                                <span class="news-time">10分钟前</span>
                             </div>
                         </div>
                         <div class="news-item">
-                            <h4 class="news-title">以色列特拉维夫市中心遭伊朗导弹袭击</h4>
+                            <div class="news-title">以色列特拉维夫市中心遭伊朗导弹袭击</div>
                             <div class="news-meta">
                                 <span class="news-source">央视新闻</span>
-                                <span>25分钟前</span>
+                                <span class="news-time">25分钟前</span>
                             </div>
                         </div>
                         <div class="news-item">
-                            <h4 class="news-title">伊朗媒体：伊官员提出停战六项条件</h4>
+                            <div class="news-title">伊朗媒体：伊官员提出停战六项条件</div>
                             <div class="news-meta">
                                 <span class="news-source">新华社</span>
-                                <span>1小时前</span>
+                                <span class="news-time">1小时前</span>
+                            </div>
+                        </div>
+                        <div class="news-item">
+                            <div class="news-title">沙特预警4月油价或飙破180美元</div>
+                            <div class="news-meta">
+                                <span class="news-source">财经网</span>
+                                <span class="news-time">2小时前</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- Douyin Hot -->
+        <!-- 抖音 Section -->
+        <section class="section" id="section-douyin">
             <div class="card">
                 <div class="card-header">
                     <div class="card-title-section">
-                        <div class="card-icon card-icon-pink">
-                            <svg width="20" height="20" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24">
-                                <path d="M9 18V5l12-3v13"/>
-                                <circle cx="6" cy="18" r="3"/>
-                                <circle cx="18" cy="16" r="3"/>
-                            </svg>
-                        </div>
+                        <div class="card-icon card-icon-douyin">🎵</div>
                         <div>
                             <div class="card-title">抖音热点</div>
-                            <div class="card-subtitle">热门话题 · 潮流追踪</div>
+                            <div class="card-subtitle">热门话题</div>
                         </div>
                     </div>
                 </div>
                 <div class="card-content">
                     <div class="douyin-list">
                         <div class="douyin-item">
-                            <div class="douyin-content">
-                                <div class="douyin-title">重温总书记关于治水的重要论述</div>
-                                <div class="douyin-meta">
-                                    <span class="douyin-tag">热点</span>
-                                    <span class="douyin-hot">125.8万 人在看</span>
-                                </div>
+                            <div class="douyin-title">重温总书记关于治水的重要论述</div>
+                            <div class="douyin-meta">
+                                <span class="douyin-tag">热点</span>
+                                <span class="douyin-hot">125.8万 人在看</span>
                             </div>
                         </div>
                         <div class="douyin-item">
-                            <div class="douyin-content">
-                                <div class="douyin-title">探访全国唯一海上有人值守气象站</div>
-                                <div class="douyin-meta">
-                                    <span class="douyin-tag">上升</span>
-                                    <span class="douyin-hot">89.3万 人在看</span>
-                                </div>
+                            <div class="douyin-title">探访全国唯一海上有人值守气象站</div>
+                            <div class="douyin-meta">
+                                <span class="douyin-tag">上升</span>
+                                <span class="douyin-hot">89.3万 人在看</span>
                             </div>
                         </div>
                         <div class="douyin-item">
-                            <div class="douyin-content">
-                                <div class="douyin-title">AI演员为啥遭网友抵制</div>
-                                <div class="douyin-meta">
-                                    <span class="douyin-tag">热议</span>
-                                    <span class="douyin-hot">67.5万 人在看</span>
-                                </div>
+                            <div class="douyin-title">AI演员为啥遭网友抵制</div>
+                            <div class="douyin-meta">
+                                <span class="douyin-tag">热议</span>
+                                <span class="douyin-hot">67.5万 人在看</span>
+                            </div>
+                        </div>
+                        <div class="douyin-item">
+                            <div class="douyin-title">逐玉梦醒哥这次不用醒了</div>
+                            <div class="douyin-meta">
+                                <span class="douyin-tag">剧集</span>
+                                <span class="douyin-hot">113.8万 人在看</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- Local Food -->
+        <!-- 美食 Section -->
+        <section class="section" id="section-food">
             <div class="card">
                 <div class="card-header">
                     <div class="card-title-section">
-                        <div class="card-icon card-icon-green">
-                            <svg width="20" height="20" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24">
-                                <path d="M12 2c2.5 0 4.5 2 4.5 4.5S14.5 11 12 11s-4.5-2-4.5-4.5S9.5 2 12 2z"/>
-                                <path d="M12 22c-2.5 0-4.5-2-4.5-4.5S9.5 13 12 13s4.5 2 4.5 4.5S14.5 22 12 22z"/>
-                            </svg>
-                        </div>
+                        <div class="card-icon card-icon-food">🍜</div>
                         <div>
                             <div class="card-title">本地美食</div>
-                            <div class="card-subtitle">附近美味 · 即刻发现</div>
+                            <div class="card-subtitle">附近美味</div>
                         </div>
                     </div>
                 </div>
                 <div class="card-content">
                     <div class="food-grid">
                         <div class="food-item">
-                            <div class="food-header">
-                                <h4 class="food-name">老北京炸酱面</h4>
-                                <span class="food-rating">⭐ 4.8</span>
-                            </div>
-                            <div class="food-footer">
-                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <div class="food-info">
+                                <div class="food-name">老北京炸酱面</div>
+                                <div class="food-meta">
                                     <span class="food-category">面食</span>
-                                    <span>500m</span>
+                                    <span class="food-distance">500m</span>
                                 </div>
-                                <span class="food-price">¥28</span>
+                            </div>
+                            <div class="food-right">
+                                <div class="food-rating">⭐ 4.8</div>
+                                <div class="food-price">¥28</div>
                             </div>
                         </div>
                         <div class="food-item">
-                            <div class="food-header">
-                                <h4 class="food-name">川味火锅店</h4>
-                                <span class="food-rating">⭐ 4.6</span>
-                            </div>
-                            <div class="food-footer">
-                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <div class="food-info">
+                                <div class="food-name">川味火锅店</div>
+                                <div class="food-meta">
                                     <span class="food-category">火锅</span>
-                                    <span>800m</span>
+                                    <span class="food-distance">800m</span>
                                 </div>
-                                <span class="food-price">¥128</span>
+                            </div>
+                            <div class="food-right">
+                                <div class="food-rating">⭐ 4.6</div>
+                                <div class="food-price">¥128</div>
                             </div>
                         </div>
                         <div class="food-item">
-                            <div class="food-header">
-                                <h4 class="food-name">深夜食堂</h4>
-                                <span class="food-rating">⭐ 4.7</span>
-                            </div>
-                            <div class="food-footer">
-                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <div class="food-info">
+                                <div class="food-name">深夜食堂</div>
+                                <div class="food-meta">
                                     <span class="food-category">烧烤</span>
-                                    <span>300m</span>
+                                    <span class="food-distance">300m</span>
                                 </div>
-                                <span class="food-price">¥68</span>
+                            </div>
+                            <div class="food-right">
+                                <div class="food-rating">⭐ 4.7</div>
+                                <div class="food-price">¥68</div>
                             </div>
                         </div>
                         <div class="food-item">
-                            <div class="food-header">
-                                <h4 class="food-name">咖啡时光</h4>
-                                <span class="food-rating">⭐ 4.5</span>
-                            </div>
-                            <div class="food-footer">
-                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <div class="food-info">
+                                <div class="food-name">咖啡时光</div>
+                                <div class="food-meta">
                                     <span class="food-category">咖啡</span>
-                                    <span>600m</span>
+                                    <span class="food-distance">600m</span>
                                 </div>
-                                <span class="food-price">¥38</span>
+                            </div>
+                            <div class="food-right">
+                                <div class="food-rating">⭐ 4.5</div>
+                                <div class="food-price">¥38</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- Footer -->
         <footer class="footer">
-            <p>🐵 热点速查 · 小猴子为你服务</p>
+            <div class="footer-monkey">🐵</div>
+            <p>猴资讯 · 小猴子为你服务</p>
             <p>数据仅供参考</p>
         </footer>
     </main>
+
+    <!-- Bottom Tab Navigation -->
+    <nav class="tab-nav">
+        <div class="tab-item active" data-tab="hot">
+            <span class="tab-icon">🔥</span>
+            <span class="tab-text">热搜</span>
+        </div>
+        <div class="tab-item" data-tab="news">
+            <span class="tab-icon">📰</span>
+            <span class="tab-text">新闻</span>
+        </div>
+        <div class="tab-item" data-tab="douyin">
+            <span class="tab-icon">🎵</span>
+            <span class="tab-text">抖音</span>
+        </div>
+        <div class="tab-item" data-tab="food">
+            <span class="tab-icon">🍜</span>
+            <span class="tab-text">美食</span>
+        </div>
+    </nav>
 
     <script>
         // 更新时间
@@ -795,11 +840,7 @@
             const now = new Date();
             const timeEl = document.getElementById('currentTime');
             if (timeEl) {
-                timeEl.textContent = now.toLocaleString('zh-CN', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    weekday: 'long',
+                timeEl.textContent = now.toLocaleTimeString('zh-CN', {
                     hour: '2-digit',
                     minute: '2-digit'
                 });
@@ -807,6 +848,37 @@
         }
         updateTime();
         setInterval(updateTime, 60000);
+
+        // Tab 切换
+        const tabItems = document.querySelectorAll('.tab-item');
+        const sections = document.querySelectorAll('.section');
+
+        tabItems.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabName = this.getAttribute('data-tab');
+                
+                // 更新 tab 样式
+                tabItems.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // 更新 section 显示
+                sections.forEach(s => s.classList.remove('active'));
+                document.getElementById('section-' + tabName).classList.add('active');
+                
+                // 滚动到顶部
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // 点击反馈
+        document.querySelectorAll('.topic-item, .news-item, .douyin-item, .food-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.style.background = '#f0f0f0';
+                setTimeout(() => {
+                    this.style.background = '';
+                }, 150);
+            });
+        });
     </script>
 </body>
 </html>
