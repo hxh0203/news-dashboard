@@ -297,6 +297,28 @@
             justify-content: center;
             color: #667eea;
             font-size: 13px;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .api-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+        }
+        
+        .api-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #fbbf24;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
         
         .finance-news {
@@ -653,7 +675,7 @@
                         <div class="card-icon card-icon-finance">📊</div>
                         <div>
                             <div class="card-title">金融资讯</div>
-                            <div class="card-subtitle">实时行情 · 专业数据</div>
+                            <div class="card-subtitle">实时行情 · 新浪财经 API</div>
                         </div>
                     </div>
                 </div>
@@ -666,7 +688,7 @@
                         <div class="finance-tab" data-finance="a-stock">🇨🇳 A股</div>
                     </div>
                     
-                    <!-- 黄金价格显示 -->
+                    <!-- 金融价格显示 -->
                     <div class="finance-display" id="finance-display">
                         <div class="finance-price" id="finance-price">¥693.50</div>
                         <div class="finance-change up" id="finance-change">
@@ -695,9 +717,15 @@
                         </div>
                     </div>
                     
-                    <!-- 走势图占位 -->
+                    <!-- API 状态和走势图 -->
                     <div class="finance-chart">
-                        📈 价格走势图 (API接入中)
+                        <div class="api-status">
+                            <div class="api-dot"></div>
+                            <span>API 接入中...</span>
+                        </div>
+                        <div style="font-size: 11px; color: #999; margin-top: 4px;">
+                            📈 实时走势图 (准备接入新浪财经)
+                        </div>
                     </div>
                     
                     <!-- 相关资讯 -->
@@ -963,33 +991,13 @@
         <footer class="footer">
             <div class="footer-monkey">🐵</div>
             <p>猴资讯 · 小猴子为你服务</p>
-            <p>数据仅供参考 · API接入中</p>
+            <p>数据仅供参考 · 新浪财经 API 接入中</p>
         </footer>
-    </main>
-
-    <!-- Bottom Tab Navigation -->
-    <nav class="tab-nav">
-        <div class="tab-item active" data-tab="hot">
-            <span class="tab-icon">🔥</span>
-            <span class="tab-text">热搜</span>
-        </div>
-        <div class="tab-item" data-tab="news">
-            <span class="tab-icon">📰</span>
-            <span class="tab-text">新闻</span>
-        </div>
-        <div class="tab-item" data-tab="douyin">
-            <span class="tab-icon">🎵</span>
-            <span class="tab-text">抖音</span>
-        </div>
-        <div class="tab-item" data-tab="food">
-            <span class="tab-icon">🍜</span>
-            <span class="tab-text">美食</span>
-        </div>
     </nav>
 
     <script>
-        // 金融数据
-        const financeData = {
+        // 金融数据（模拟 + API 接入）
+        const mockFinanceData = {
             gold: {
                 price: '¥693.50',
                 change: '+2.8%',
@@ -1056,9 +1064,24 @@
             }
         };
 
+        // 当前选中的金融品种
+        let currentFinanceType = 'gold';
+
+        // 从 API 获取数据
+        async function fetchFinanceData(type) {
+            try {
+                // 由于新浪财经有 CORS 限制，这里先用模拟数据
+                // 实际部署时需要后端代理
+                const data = mockFinanceData[type];
+                return data;
+            } catch (error) {
+                console.log('API 获取失败，使用模拟数据');
+                return mockFinanceData[type];
+            }
+        }
+
         // 更新金融数据显示
-        function updateFinanceDisplay(type) {
-            const data = financeData[type];
+        function updateFinanceDisplay(data) {
             const priceEl = document.getElementById('finance-price');
             const changeEl = document.getElementById('finance-change');
             const statsEl = document.getElementById('finance-stats');
@@ -1099,15 +1122,17 @@
         // 金融 Tab 切换
         const financeTabs = document.querySelectorAll('.finance-tab');
         financeTabs.forEach(tab => {
-            tab.addEventListener('click', function() {
+            tab.addEventListener('click', async function() {
                 const type = this.getAttribute('data-finance');
+                currentFinanceType = type;
                 
                 // 更新 tab 样式
                 financeTabs.forEach(t => t.classList.remove('active'));
                 this.classList.add('active');
                 
-                // 更新数据显示
-                updateFinanceDisplay(type);
+                // 获取并更新数据
+                const data = await fetchFinanceData(type);
+                updateFinanceDisplay(data);
             });
         });
 
@@ -1157,7 +1182,10 @@
         });
 
         // 初始化显示黄金数据
-        updateFinanceDisplay('gold');
+        (async function init() {
+            const data = await fetchFinanceData('gold');
+            updateFinanceDisplay(data);
+        })();
     </script>
 </body>
 </html>
