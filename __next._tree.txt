@@ -1,2 +1,2 @@
-:HL["/news-dashboard/_next/static/chunks/0-0lwbngrrj-o.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}},"staleTime":300,"buildId":"H7dr9nYZ-PWm9bRh1hoiQ"}
+:HL["/news-dashboard/_next/static/chunks/0.v._s-c1t._b.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}},"staleTime":300,"buildId":"DlowTRRA_NboiC3hy3yHT"}
